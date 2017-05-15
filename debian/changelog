@@ -1,3 +1,9 @@
+cocaine-framework-native (0.12.14-1) unstable; urgency=low
+
+  * Rebuild with cocaine 0.12.14.
+
+ -- Evgeny Safronov <division494@gmail.com>  Mon, 15 May 2017 19:03:43 +0300
+
 cocaine-framework-native (0.12.13-2) unstable; urgency=low
 
   * Rebuild with cocaine 0.12.13.1 with disabled hpack compression in encoder.
