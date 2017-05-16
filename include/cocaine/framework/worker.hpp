@@ -75,6 +75,9 @@ public:
     auto
     options() const -> const options_t&;
 
+    auto
+    token() const -> token_t;
+
     int
     run();
 };

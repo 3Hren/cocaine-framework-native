@@ -21,7 +21,14 @@
 
 #include <boost/program_options.hpp>
 
+#include "defaults.hpp"
+
 using namespace cocaine::framework;
+
+namespace details {
+    constexpr auto KEY_ENV_TOKEN_TYPE = "COCAINE_APP_TOKEN_TYPE";
+    constexpr auto KEY_ENV_TOKEN_BODY = "COCAINE_APP_TOKEN_BODY";
+}
 
 namespace {
 
@@ -33,9 +40,15 @@ void help(const char* program, const boost::program_options::options_description
     std::cerr << description << std::endl;
 }
 
+template<typename AnyMapping>
+std::string as_string_at(const AnyMapping& m, const std::string& key) {
+    return boost::any_cast<std::string>(m.at(key));
+}
+
 } // namespace
 
-options_t::options_t(int argc, char** argv) {
+options_t::options_t(int argc, char** argv)
+{
     boost::program_options::options_description options("Configuration");
     options.add_options()
         ("app",      boost::program_options::value<std::string>(),   "application name")
@@ -95,9 +108,33 @@ options_t::options_t(int argc, char** argv) {
     locator  = vm["locator"].as<std::string>();
 
     other["protocol"] = protocol;
+
+    const char *env_val = nullptr;
+
+    if ((env_val = std::getenv(::details::KEY_ENV_TOKEN_TYPE)) != nullptr) {
+        other["token_type"] = std::string(env_val);
+    } else {
+        other["token_type"] = std::string(details::DEFAULT_TOKEN_TYPE);
+    }
+
+    if ((env_val = std::getenv(::details::KEY_ENV_TOKEN_BODY)) != nullptr) {
+        other["token_body"] = std::string(env_val);
+    } else {
+        other["token_body"] = std::string();
+    }
 }
 
 std::uint32_t
 options_t::protocol() const {
     return boost::any_cast<std::uint32_t>(other.at("protocol"));
+}
+
+std::string
+options_t::token_type() const {
+    return as_string_at(other, "token_type");
+}
+
+std::string
+options_t::token_body() const {
+    return as_string_at(other, "token_body");
 }

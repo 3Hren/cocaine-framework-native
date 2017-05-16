@@ -36,6 +36,7 @@ set(SOURCES
     receiver
     trace.cpp
     trace_logger.cpp
+    tokman
     worker.cpp
     worker/dispatch
     worker/error

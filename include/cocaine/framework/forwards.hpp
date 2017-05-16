@@ -76,5 +76,10 @@ namespace cocaine {
         struct options_t;
         class dispatch_t;
         class worker_t;
+
+        struct token_t {
+            std::string type;
+            std::string body;
+        };
     } // namespace framework
 } // namespace cocaine

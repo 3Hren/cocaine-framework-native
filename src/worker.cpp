@@ -36,6 +36,8 @@
 #include "cocaine/framework/detail/worker/executor.hpp"
 #include "cocaine/framework/detail/worker/session.hpp"
 
+#include "tokman.hpp"
+
 namespace ph = std::placeholders;
 
 using namespace cocaine;
@@ -72,6 +74,7 @@ public:
 
     /// Service manager, for user purposes.
     service_manager_t manager;
+    std::shared_ptr<token_manager_t> token_manager;
 
     std::shared_ptr<worker_session_t> session;
 
@@ -81,7 +84,9 @@ public:
         options(std::move(options)),
         executor(),
         manager(std::move(entries), 1)
-    {}
+    {
+        token_manager = token_manager_t::make(io, manager, this->options);
+    }
 };
 
 worker_t::worker_t(options_t options) {
@@ -161,4 +166,8 @@ int worker_t::run() {
     }
 
     return 0;
+}
+
+auto worker_t::token() const -> token_t {
+    return d->token_manager->token();
 }
