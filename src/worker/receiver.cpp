@@ -69,7 +69,7 @@ auto on_recv_with_meta(future<decoded_message>& future) -> boost::optional<frame
     const auto message = future.get();
     if (auto chunk = on_recv(message)) {
         // TODO(@antmat): WTF?
-        hpack::header_storage_t headers;
+        hpack::headers_t headers;
 
         for (const auto& header : message.meta()) {
             headers.push_back(header);
@@ -93,7 +93,7 @@ receiver::receiver(const std::vector<hpack::header_t>& headers,
     session(std::move(session))
 {}
 
-auto receiver::invocation_headers() const noexcept -> const hpack::header_storage_t& {
+auto receiver::invocation_headers() const noexcept -> const hpack::headers_t& {
     return headers;
 }
 

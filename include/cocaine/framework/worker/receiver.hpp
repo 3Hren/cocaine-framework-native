@@ -32,11 +32,11 @@ namespace worker {
 
 struct frame_t {
     std::string data;
-    hpack::header_storage_t meta;
+    hpack::headers_t meta;
 };
 
 class receiver {
-    hpack::header_storage_t headers;
+    hpack::headers_t headers;
     std::shared_ptr<basic_receiver_t<worker_session_t>> session;
 
 public:
@@ -45,7 +45,7 @@ public:
              std::shared_ptr<basic_receiver_t<worker_session_t>> session);
 
     /// Returns a const lvalue reference to headers that were passed with an invocation event.
-    auto invocation_headers() const noexcept -> const hpack::header_storage_t&;
+    auto invocation_headers() const noexcept -> const hpack::headers_t&;
 
     template<typename R = std::string>
     auto recv() -> future<boost::optional<R>>;

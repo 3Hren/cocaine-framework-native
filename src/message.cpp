@@ -33,7 +33,7 @@ class decoded_message::inner_t {
 public:
     inner_t() {}
 
-    inner_t(msgpack::object _obj, std::unique_ptr<msgpack::zone> zone, std::vector<char>&& _storage, hpack::header_storage_t _headers) :
+    inner_t(msgpack::object _obj, std::unique_ptr<msgpack::zone> zone, std::vector<char>&& _storage, hpack::headers_t _headers) :
         obj(std::move(_obj)),
         zone(std::move(zone)),
         storage(std::move(_storage)),
@@ -43,7 +43,7 @@ public:
     msgpack::object obj;
     std::unique_ptr<msgpack::zone> zone;
     std::vector<char> storage;
-    hpack::header_storage_t headers;
+    hpack::headers_t headers;
 };
 
 decoded_message::decoded_message(boost::none_t) :
